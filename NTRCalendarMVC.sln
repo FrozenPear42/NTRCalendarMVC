@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTRCalendarMVC", "NTRCalendarMVC\NTRCalendarMVC.csproj", "{75E90B13-CCC4-4855-B21B-70B6C11670BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTRCalendarMVC.Tests", "NTRCalendarMVC.Tests\NTRCalendarMVC.Tests.csproj", "{205A3278-8FDF-4D09-B235-9AED514DFD75}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75E90B13-CCC4-4855-B21B-70B6C11670BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75E90B13-CCC4-4855-B21B-70B6C11670BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75E90B13-CCC4-4855-B21B-70B6C11670BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75E90B13-CCC4-4855-B21B-70B6C11670BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205A3278-8FDF-4D09-B235-9AED514DFD75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205A3278-8FDF-4D09-B235-9AED514DFD75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205A3278-8FDF-4D09-B235-9AED514DFD75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205A3278-8FDF-4D09-B235-9AED514DFD75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
