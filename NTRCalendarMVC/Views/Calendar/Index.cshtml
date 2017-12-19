@@ -1,0 +1,55 @@
+﻿@model IEnumerable<NTRCalendarMVC.ViewModels.Week>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Welcome @ViewBag.User</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">@Html.ActionLink("prev", "Prev")</div>
+        <div class="col">Monday</div>
+        <div class="col">Tuesday</div>
+        <div class="col">Wednesday</div>
+        <div class="col">Thursday</div>
+        <div class="col">Friday</div>
+        <div class="col">Saturday</div>
+        <div class="col">Sunday</div>
+        <div class="col">@Html.ActionLink("prev", "Prev")</div>
+    </div>
+
+    @foreach (var week in Model) {
+        <div class="row">
+            <div class="col">W @week.Number<br/>@week.Year</div>
+            @foreach (var day in week.Days) {
+                <div class="col">
+                    <div>
+                        <div>
+                            @day.Name
+                            @Html.ActionLink("add", "Index")
+                        </div>
+                        <div class="appointment-list">
+                            @foreach (var appointment in day.Appointments) {
+                                @Html.ActionLink(appointment.Title, "Details", new {id = appointment.AppointmentID})
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col">W @week.Number<br/>@week.Year</div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col">@Html.ActionLink("next", "Next")</div>
+        <div class="col">Monday</div>
+        <div class="col">Tuesday</div>
+        <div class="col">Wednesday</div>
+        <div class="col">Thursday</div>
+        <div class="col">Friday</div>
+        <div class="col">Saturday</div>
+        <div class="col">Sunday</div>
+        <div class="col">@Html.ActionLink("next", "Next")</div>
+    </div>
+</div>
