@@ -8,10 +8,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using log4net;
 using NTRCalendarMVC.ViewModels;
 
 namespace NTRCalendarMVC.Controllers {
     public class CalendarController : Controller {
+        ILog log = log4net.LogManager.GetLogger(typeof(CalendarController).ToString());
+
+
         private StorageContext db = new StorageContext();
 
         // GET: Calendar
@@ -58,6 +62,8 @@ namespace NTRCalendarMVC.Controllers {
                 User = $"{user.FirstName} {user.LastName}"
             };
 
+            log.InfoFormat("Rendered calendar grid from {0} for {1}", date, userID);
+
             return View(model);
         }
 
@@ -81,6 +87,7 @@ namespace NTRCalendarMVC.Controllers {
             if (appointment == null) {
                 return HttpNotFound();
             }
+            log.InfoFormat("Rendered details for {0}", appointment);
             return View(appointment);
         }
 
@@ -92,6 +99,7 @@ namespace NTRCalendarMVC.Controllers {
             if (ModelState.IsValid) {
                 db.Entry(appointment).State = EntityState.Modified;
                 db.SaveChanges();
+                log.InfoFormat("Changed {0}", appointment);
                 return RedirectToAction("Index");
             }
             return View(appointment);
@@ -123,9 +131,8 @@ namespace NTRCalendarMVC.Controllers {
                     };
                     db.Attendances.Add(att);
                 }
-
-
                 db.SaveChanges();
+                log.InfoFormat("Created {0}", appointment);
                 return RedirectToAction("Index");
             }
 
@@ -150,6 +157,7 @@ namespace NTRCalendarMVC.Controllers {
             Appointment appointment = db.Appointments.Find(id);
             db.Appointments.Remove(appointment);
             db.SaveChanges();
+            log.InfoFormat("Deleted {0}", appointment);
             return RedirectToAction("Index");
         }
     }

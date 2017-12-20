@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using log4net;
 
 namespace NTRCalendarMVC.Controllers {
     public class HomeController : Controller {
+
+        ILog log = log4net.LogManager.GetLogger(typeof(HomeController).ToString());
+
         private StorageContext db = new StorageContext();
 
         public ActionResult Index() {
@@ -20,6 +24,7 @@ namespace NTRCalendarMVC.Controllers {
                 return RedirectToAction("Register");
 
             SignUser(person);
+            log.InfoFormat("User {0} signed in", userId);
             return RedirectToAction("Index", "Calendar");
         }
 
@@ -36,6 +41,7 @@ namespace NTRCalendarMVC.Controllers {
                 person.PersonID = Guid.NewGuid();
                 db.People.Add(person);
                 db.SaveChanges();
+                log.InfoFormat("User {0} registered", person.UserID);
                 SignUser(person);
                 return RedirectToAction("Index", "Calendar");
             }
@@ -45,6 +51,7 @@ namespace NTRCalendarMVC.Controllers {
 
         public ActionResult LogOut() {
             SignOut();
+            log.InfoFormat("User signed out");
             return RedirectToAction("Index");
         }
 

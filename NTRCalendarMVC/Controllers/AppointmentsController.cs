@@ -12,6 +12,7 @@ namespace NTRCalendarMVC.Controllers
 {
     public class AppointmentsController : Controller
     {
+        
         private StorageContext db = new StorageContext();
 
         // GET: Appointments
