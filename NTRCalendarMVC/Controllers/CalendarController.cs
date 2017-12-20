@@ -15,13 +15,20 @@ namespace NTRCalendarMVC.Controllers {
         private StorageContext db = new StorageContext();
 
         // GET: Calendar
-        public ActionResult Index(DateTime? baseDate) {
-            var weeks = new List<Week>(4);
+        public ActionResult Index(DateTime? firstDay) {
+            string userID = (string) Session["UserID"];
+            if (userID == null) return RedirectToAction("Index", "Home");
 
-            var day = baseDate ?? DateTime.Today;
+            var weeks = new List<Week>(4);
+            var day = firstDay ?? DateTime.Today;
 
             while (day.DayOfWeek != DayOfWeek.Monday) day = day.AddDays(-1);
-            var appointments = db.Appointments.ToList();
+            var date = day;
+
+            var appointments = db.Attendances
+                .Where(a => a.Person.UserID.Equals(userID))
+                .Select(a => a.Appointment)
+                .ToList();
 
             for (var weekNo = 0; weekNo < 4; ++weekNo) {
                 var w = new Week {
@@ -37,7 +44,6 @@ namespace NTRCalendarMVC.Controllers {
                             appointments
                                 .Where(a => a.AppointmentDate.Equals(day))
                                 .OrderBy(a => a.StartTime)
-                                .Reverse()
                                 .ToList())
                     };
                     w.Days.Add(d);
@@ -45,16 +51,23 @@ namespace NTRCalendarMVC.Controllers {
                 }
                 weeks.Add(w);
             }
+            var model = new CalendarViewModel {
+                FirstDay = date,
+                Today = DateTime.Today,
+                Weeks = weeks
+            };
 
-            return View(weeks);
+            return View(model);
         }
 
-        public ActionResult Prev() {
-            return RedirectToAction("Index");
+        public ActionResult Prev(DateTime day) {
+            var firstDay = day.AddDays(-7);
+            return RedirectToAction("Index", new {firstDay = firstDay});
         }
 
-        public ActionResult Next() {
-            return RedirectToAction("Index");
+        public ActionResult Next(DateTime day) {
+            var firstDay = day.AddDays(7);
+            return RedirectToAction("Index", new {firstDay = firstDay});
         }
 
 

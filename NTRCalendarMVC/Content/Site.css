@@ -8,8 +8,45 @@ input,
 select,
 textarea { max-width: 280px; }
 
-.day-cell {
-    height: 20%;
+.weekday-label {
+    text-align: center;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5%;
+    border-style: solid;
+    padding: 4px;
+    background-color: #CCCCE9;
+    height: 100%;
+}
+
+.grid {
+    width: 100%;
+}
+
+.grid td {
+    vertical-align: top;
+    padding: 3px;
+}
+
+.grid-header-cell {
+    height: 2em;
+    max-height: 2em;
+}
+
+.grid-cell {
+    height: 8em;
+    max-height: 8em;
+    width: 140px;
+}
+
+.button-link {
+    text-align: center;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5%;
+    border-style: solid;
+    padding: 4px;
+    background-color: #CCE6E6;
 }
 
 .day-header {
@@ -20,10 +57,20 @@ textarea { max-width: 280px; }
     padding: 4px;
 }
 
+.day-today {
+    background-color: #cd853f;
+    color: #fafad2;
+}
+
+.appointment-list {
+    overflow-y: scroll;
+}
+
 .appointment-item {
     border-width: 1px;
     border-color: black;
     border-radius: 5%;
     border-style: solid;
     padding: 8px;
+    margin: 1px;
 }

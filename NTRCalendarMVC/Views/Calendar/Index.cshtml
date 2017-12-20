@@ -1,41 +1,46 @@
-﻿@model IEnumerable<NTRCalendarMVC.ViewModels.Week>
+﻿@model NTRCalendarMVC.ViewModels.CalendarViewModel
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Welcome @ViewBag.User</h2>
+<h2>Welcome @Session["UserID"]</h2>
 
 <div class="container-fluid">
-    <table class="table">
+    <table class="grid">
         <tbody>
         <tr>
-            <td>@Html.ActionLink("prev", "Prev")</td>
-            <td>Monday</td>
-            <td>Tuesday</td>
-            <td>Wednesday</td>
-            <td>Thursday</td>
-            <td>Friday</td>
-            <td>Saturday</td>
-            <td>Sunday</td>
-            <td>@Html.ActionLink("prev", "Prev")</td>
+            <td><div class="button-link">@Html.ActionLink("prev", "Prev", new { day = Model.FirstDay })</div></td>
+            <td><div class="weekday-label">Poniedziałek</div></td>
+            <td><div class="weekday-label">Wtorek</div></td>
+            <td><div class="weekday-label">Środa</div></td>
+            <td><div class="weekday-label">Czwartek</div></td>
+            <td><div class="weekday-label">Piątek</div></td>
+            <td><div class="weekday-label">Sobota</div></td>
+            <td><div class="weekday-label">Niedziela</div></td>
+            <td><div class="button-link">@Html.ActionLink("prev", "Prev", new { day = Model.FirstDay })</div></td>
         </tr>
 
-        @foreach (var week in Model) {
+        @foreach (var week in Model.Weeks) {
             <tr>
-                <td>
-                    @Html.ValueFor(m => week.Number, "W{0}")
-                    <br/>
-                    @Html.ValueFor(m => week.Year)
+                <td class="grid-cell">
+                    <div class="weekday-label">
+                        @Html.ValueFor(m => week.Number, "W{0}")
+                        <br/>
+                        @Html.ValueFor(m => week.Year)
+                     </div>
                 </td>
+
                 @foreach (var day in week.Days) {
-                    <td class="day-cell">
+                    <td class="grid-cell">
                         <div>
-                            <div class="day-header">
-                                @day.Name
+                            <div class="day-header @(day.Date.Equals(Model.Today) ? "day-today" : "")">
+                                @Html.ValueFor(m => day.Name)
+                                &nbsp;
                                 @Html.ActionLink("+", "Create", new {day = day.Date})
                             </div>
-                            <div class="appointment-list">
+                            <div class="appointment-list grid-cell">
                                 @foreach (var appointment in day.Appointments) {
                                     <div class="appointment-item">
                                         @Html.ValueFor(m => appointment.StartTime, "{0:hh\\:mm} - ")
@@ -48,9 +53,28 @@
                         </div>
                     </td>
                 }
-                <td>W @week.Number<br/>@week.Year</td>
+                <td class="grid-cell">
+                    <div class="weekday-label">
+                        @Html.ValueFor(m => week.Number, "W{0}")
+                        <br />
+                        @Html.ValueFor(m => week.Year)
+                    </div>
+                </td>
             </tr>
         }
+        <tr>
+            <td><div class="button-link">@Html.ActionLink("next", "Next", new { day = Model.FirstDay })</div></td>
+            <td><div class="weekday-label">Poniedziałek</div></td>
+            <td><div class="weekday-label">Wtorek</div></td>
+            <td><div class="weekday-label">Środa</div></td>
+            <td><div class="weekday-label">Czwartek</div></td>
+            <td><div class="weekday-label">Piątek</div></td>
+            <td><div class="weekday-label">Sobota</div></td>
+            <td><div class="weekday-label">Niedziela</div></td>
+            <td><div class="button-link">@Html.ActionLink("next", "Next", new { day = Model.FirstDay })</div></td>
+        </tr>
+
+
         </tbody>
     </table>
 </div>

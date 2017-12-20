@@ -165,6 +165,7 @@
     <Compile Include="Models\StorageContext.cs" />
     <Compile Include="ViewModels\CalendarViewModel.cs" />
     <Compile Include="ViewModels\Day.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Week.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -201,8 +202,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Appointments\Create.cshtml" />
     <Content Include="Views\Appointments\Delete.cshtml" />
@@ -213,6 +212,7 @@
     <Content Include="Views\Calendar\Details.cshtml" />
     <Content Include="Views\Calendar\Create.cshtml" />
     <Content Include="Views\Calendar\Delete.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

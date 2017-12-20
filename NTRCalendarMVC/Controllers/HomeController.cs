@@ -4,27 +4,49 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace NTRCalendarMVC.Controllers
-{
-    public class HomeController : Controller
-    {
-        public ActionResult Index()
-        {
+namespace NTRCalendarMVC.Controllers {
+    public class HomeController : Controller {
+        private StorageContext db = new StorageContext();
+
+        public ActionResult Index() {
+            Session.Remove("UserId");
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+        [HttpPost]
+        public ActionResult Index(string userId) {
+            var person = db.People.FirstOrDefault(p => p.UserID.Equals(userId));
+            if (person == null)
+                return RedirectToAction("Register");
 
+            SignUser(person);
+            return RedirectToAction("Index", "Calendar");
+        }
+
+        public ActionResult Register() {
             return View();
         }
 
-        public ActionResult Contact()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "PersonID,FirstName,LastName,UserID,timestamp")] Person person)
         {
-            ViewBag.Message = "Your contact page.";
+            if (ModelState.IsValid)
+            {
+                person.PersonID = Guid.NewGuid();
+                db.People.Add(person);
+                db.SaveChanges();
+                SignUser(person);
+                return RedirectToAction("Index", "Calendar");
+            }
 
-            return View();
+            return View(person);
         }
+
+        private void SignUser(Person person) {
+            ViewBag.User = $"{person.FirstName} {person.LastName}";
+            Session["userId"] = person.UserID;
+        }
+
     }
 }
