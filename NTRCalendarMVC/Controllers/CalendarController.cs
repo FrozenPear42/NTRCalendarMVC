@@ -18,10 +18,9 @@ namespace NTRCalendarMVC.Controllers {
         public ActionResult Index(DateTime? firstDay) {
             string userID = (string) Session["UserID"];
             if (userID == null) return RedirectToAction("Index", "Home");
-
+            var user = db.People.FirstOrDefault(p => p.UserID.Equals(userID));
             var weeks = new List<Week>(4);
             var day = firstDay ?? DateTime.Today;
-
             while (day.DayOfWeek != DayOfWeek.Monday) day = day.AddDays(-1);
             var date = day;
 
@@ -51,10 +50,12 @@ namespace NTRCalendarMVC.Controllers {
                 }
                 weeks.Add(w);
             }
+
             var model = new CalendarViewModel {
                 FirstDay = date,
                 Today = DateTime.Today,
-                Weeks = weeks
+                Weeks = weeks,
+                User = $"{user.FirstName} {user.LastName}"
             };
 
             return View(model);
@@ -107,9 +108,23 @@ namespace NTRCalendarMVC.Controllers {
         public ActionResult Create(
             [Bind(Include = "AppointmentID,Title,Description,AppointmentDate,StartTime,EndTime,timestamp")]
             Appointment appointment) {
+            string userID = (string) Session["UserID"];
+            if (userID == null) return RedirectToAction("Index", "Home");
+
             if (ModelState.IsValid) {
                 appointment.AppointmentID = Guid.NewGuid();
                 db.Appointments.Add(appointment);
+                var person = db.People.FirstOrDefault(p => p.UserID.Equals(userID));
+                if (person != null) {
+                    var att = new Attendance {
+                        AttendanceID = Guid.NewGuid(),
+                        PersonID = person.PersonID,
+                        AppointmentID = appointment.AppointmentID,
+                    };
+                    db.Attendances.Add(att);
+                }
+
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

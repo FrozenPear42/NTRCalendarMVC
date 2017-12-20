@@ -17,24 +17,27 @@ namespace NTRCalendarMVC
 
         public Guid AppointmentID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Tytu³ jest wymagany")]
         [StringLength(16)]
         public string Title { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Opis jest wymagany")]
         [StringLength(50)]
         public string Description { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime AppointmentDate { get; set; }
 
+        [Required(ErrorMessage = "Start jest wymagany")]
         public TimeSpan StartTime { get; set; }
 
+        [Required(ErrorMessage = "Koniec jest wymagany")]
         public TimeSpan EndTime { get; set; }
 
         [Column(TypeName = "timestamp")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [MaxLength(8)]
+        [Timestamp]
         public byte[] timestamp { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

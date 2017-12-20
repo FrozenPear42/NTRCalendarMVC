@@ -8,5 +8,6 @@ namespace NTRCalendarMVC.ViewModels {
         public DateTime FirstDay { get; set; }
         public DateTime Today { get; set; }
         public List<Week> Weeks { get; set; }
+        public string User { get; set; }
     }
 }

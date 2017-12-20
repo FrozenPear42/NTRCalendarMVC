@@ -9,7 +9,7 @@ namespace NTRCalendarMVC.Controllers {
         private StorageContext db = new StorageContext();
 
         public ActionResult Index() {
-            Session.Remove("UserId");
+            SignOut();
             return View();
         }
 
@@ -43,9 +43,18 @@ namespace NTRCalendarMVC.Controllers {
             return View(person);
         }
 
+        public ActionResult LogOut() {
+            SignOut();
+            return RedirectToAction("Index");
+        }
+
         private void SignUser(Person person) {
-            ViewBag.User = $"{person.FirstName} {person.LastName}";
-            Session["userId"] = person.UserID;
+            Session["UserId"] = person.UserID;
+        }
+
+        private void SignOut()
+        {
+            Session.Remove("UserID");
         }
 
     }

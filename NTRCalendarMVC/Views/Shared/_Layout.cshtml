@@ -11,7 +11,9 @@
 
 <nav class="navbar navbar-dark bg-primary">
     @Html.ActionLink("Calendar", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
-    
+    <span class="navbar-text">
+        @Html.ActionLink("Wyloguj się", "LogOut", "Home")
+    </span>
 </nav>
 
 <div class="container body-content">
