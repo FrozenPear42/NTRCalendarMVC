@@ -7,8 +7,9 @@ namespace NTRCalendarMVC.ViewModels
 {
     public class Day
     {
-        public string Name { get; set; }
         public List<Appointment> Appointments { get; set; }
+        public DateTime Date { get; set; }
+        public string Name => Date.ToString("dd MMMM");
 
         public Day() {
             Appointments = new List<Appointment>();

@@ -7,3 +7,23 @@
 input,
 select,
 textarea { max-width: 280px; }
+
+.day-cell {
+    height: 20%;
+}
+
+.day-header {
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5%;
+    border-style: solid;
+    padding: 4px;
+}
+
+.appointment-item {
+    border-width: 1px;
+    border-color: black;
+    border-radius: 5%;
+    border-style: solid;
+    padding: 8px;
+}

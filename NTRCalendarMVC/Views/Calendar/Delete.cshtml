@@ -1,0 +1,32 @@
+﻿@model NTRCalendarMVC.Appointment
+
+@{
+    ViewBag.Title = "Usuwanie";
+}
+
+<h2>Usuwanie</h2>
+
+<h3>Czy napewno chcesz usunąć to spotkanie?</h3>
+<div>
+    <hr/>
+    <h4>@Html.ValueFor(m => m.Title)</h4>
+    <h6>
+        @Html.ValueFor(m => m.AppointmentDate, "{0:dd MMMM yyyy}, ")
+        @Html.ValueFor(m => m.StartTime, "{0:hh\\:mm} - ")
+        @Html.ValueFor(m => m.EndTime, "{0:hh\\:mm}")
+    </h6>
+    <p>
+        @Html.ValueFor(m => m.Description)
+    </p>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="input-group">
+            <input type="submit" value="Usuń" class="btn btn-danger"/>
+        </div>
+        <div class="input-group">
+            @Html.ActionLink("Anuluj", "Index")
+        </div>
+    }
+</div>

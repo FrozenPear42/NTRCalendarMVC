@@ -1,7 +1,7 @@
 ﻿@model NTRCalendarMVC.Appointment
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create";
 }
 
 
@@ -11,7 +11,7 @@
 
     <div class="form-horizontal">
         <h4>Spotkanie</h4>
-        <h5>@Html.ValueFor(model => model.AppointmentDate, "{0:dd MMMM yyyy}")</h5>
+        <h5>@Html.ValueFor(model => model.AppointmentDate, "{0:dd MMMM YYYY}")</h5>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.AppointmentID)
@@ -51,18 +51,10 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-2">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </div>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-2">
-                @Html.ActionLink("Remove", "Delete", new {id = Model.AppointmentID})
-            </div>
-        </div>
-
-
     </div>
 }
 
