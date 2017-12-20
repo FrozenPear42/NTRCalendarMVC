@@ -14,6 +14,7 @@ namespace NTRCalendarMVC.Controllers {
 
         public ActionResult Index() {
             SignOut();
+            log.Info("New connection");
             return View();
         }
 
