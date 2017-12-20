@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -98,9 +99,15 @@ namespace NTRCalendarMVC.Controllers {
             Appointment appointment) {
             if (ModelState.IsValid) {
                 db.Entry(appointment).State = EntityState.Modified;
-                db.SaveChanges();
-                log.InfoFormat("Changed {0}", appointment);
-                return RedirectToAction("Index");
+                try {
+                    db.SaveChanges();
+                    log.InfoFormat("Changed {0}", appointment);
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateConcurrencyException e) {
+                    ModelState.AddModelError(string.Empty,
+                        "Nie można zapisać, spotkanie zmodyfikowane w innej sesji aplikacji.");
+                }
             }
             return View(appointment);
         }
@@ -156,9 +163,16 @@ namespace NTRCalendarMVC.Controllers {
         public ActionResult DeleteConfirmed(Guid id) {
             Appointment appointment = db.Appointments.Find(id);
             db.Appointments.Remove(appointment);
-            db.SaveChanges();
-            log.InfoFormat("Deleted {0}", appointment);
-            return RedirectToAction("Index");
+            try {
+                db.SaveChanges();
+                log.InfoFormat("Deleted {0}", appointment);
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateConcurrencyException e) {
+                ModelState.AddModelError(string.Empty,
+                    "Nie można zapisać, spotkanie usunięte w innej sesji aplikacji.");
+            }
+            return View(appointment);
         }
     }
 }
