@@ -15,14 +15,21 @@ using NTRCalendarMVC.ViewModels;
 namespace NTRCalendarMVC.Controllers {
     public class CalendarController : Controller {
         ILog log = log4net.LogManager.GetLogger(typeof(CalendarController).ToString());
-
-
+        
         private StorageContext db = new StorageContext();
+
+        public CalendarController() {}
+
+        public CalendarController(StorageContext pdb) {
+            db = pdb;
+        }
 
         // GET: Calendar
         public ActionResult Index(DateTime? firstDay) {
+
             string userID = (string) Session["UserID"];
             if (userID == null) return RedirectToAction("Index", "Home");
+
             var user = db.People.FirstOrDefault(p => p.UserID.Equals(userID));
             var weeks = new List<Week>(4);
             var day = firstDay ?? DateTime.Today;

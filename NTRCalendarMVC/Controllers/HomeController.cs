@@ -7,10 +7,16 @@ using log4net;
 
 namespace NTRCalendarMVC.Controllers {
     public class HomeController : Controller {
-
         ILog log = log4net.LogManager.GetLogger(typeof(HomeController).ToString());
 
         private StorageContext db = new StorageContext();
+
+
+        public HomeController() { }
+
+        public HomeController(StorageContext pdb) {
+            db = pdb;
+        }
 
         public ActionResult Index() {
             SignOut();
@@ -35,10 +41,8 @@ namespace NTRCalendarMVC.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([Bind(Include = "PersonID,FirstName,LastName,UserID,timestamp")] Person person)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Register([Bind(Include = "PersonID,FirstName,LastName,UserID,timestamp")] Person person) {
+            if (ModelState.IsValid) {
                 person.PersonID = Guid.NewGuid();
                 db.People.Add(person);
                 db.SaveChanges();
@@ -60,10 +64,8 @@ namespace NTRCalendarMVC.Controllers {
             Session["UserId"] = person.UserID;
         }
 
-        private void SignOut()
-        {
+        private void SignOut() {
             Session.Remove("UserID");
         }
-
     }
 }
