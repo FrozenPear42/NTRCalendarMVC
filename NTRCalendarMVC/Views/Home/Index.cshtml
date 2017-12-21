@@ -1,8 +1,10 @@
 ﻿@model NTRCalendarMVC.ViewModels.LoginViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Kalendarz";
 }
+
+<h2>Kalendarz</h2>
 
 <div class="container">
     @using (Html.BeginForm()) {
@@ -25,9 +27,9 @@
             </div>
         </div>
     }
-
-
-
-    @Html.ActionLink("Zarejestruj się", "Register")
-
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Zarejestruj się", "Register")
+        </div>
+    </div>
 </div>

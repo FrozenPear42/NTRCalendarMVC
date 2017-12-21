@@ -93,7 +93,7 @@ namespace NTRCalendarMVC.Controllers {
             }
             Appointment appointment = db.Appointments.Find(id);
             if (appointment == null) {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             log.InfoFormat("Rendered details for {0}", appointment);
             return View(appointment);
@@ -114,6 +114,14 @@ namespace NTRCalendarMVC.Controllers {
                 catch (DbUpdateConcurrencyException e) {
                     ModelState.AddModelError(string.Empty,
                         "Nie można zapisać, spotkanie zmodyfikowane w innej sesji aplikacji.");
+                }
+                catch (OverflowException e)
+                {
+                    ModelState.AddModelError(string.Empty, "Format godziny jest niepoproawny");
+                } 
+                catch (Exception e)
+                {
+                    ModelState.AddModelError(string.Empty, "Wystąpił błąd");
                 }
             }
             return View(appointment);
@@ -160,7 +168,7 @@ namespace NTRCalendarMVC.Controllers {
             }
             Appointment appointment = db.Appointments.Find(id);
             if (appointment == null) {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(appointment);
         }
@@ -168,11 +176,29 @@ namespace NTRCalendarMVC.Controllers {
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id) {
+            string userID = (string)Session["UserID"];
+            if (userID == null) return RedirectToAction("Index", "Home");
+
+            var attendances = db.Attendances.Where(a => a.AppointmentID.Equals(id)).ToList();
+
+            try { 
+            var att = attendances.First(a => a.Person.UserID.Equals(userID));
+                db.Attendances.Remove(att);
+            } catch(Exception)
+            {
+                ModelState.AddModelError(string.Empty,
+                    "Nie można zapisać, spotkanie usunięte w innej sesji aplikacji.");
+            }
             Appointment appointment = db.Appointments.Find(id);
-            db.Appointments.Remove(appointment);
+
+            if (attendances.Count == 1)
+            {
+                db.Appointments.Remove(appointment);
+            }
+
             try {
                 db.SaveChanges();
-                log.InfoFormat("Deleted {0}", appointment);
+                log.InfoFormat("Deleted {0} for {1}", appointment, userID);
                 return RedirectToAction("Index");
             }
             catch (DbUpdateConcurrencyException e) {

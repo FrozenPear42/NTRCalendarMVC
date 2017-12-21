@@ -55,6 +55,7 @@ textarea { max-width: 280px; }
     border-radius: 5%;
     border-style: solid;
     padding: 4px;
+    text-align: center;
 }
 
 .day-today {
