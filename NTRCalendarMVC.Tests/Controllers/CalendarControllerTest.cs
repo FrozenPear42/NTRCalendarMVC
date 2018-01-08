@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using CarlosInIt.EntityFramework.Mocks;
+using Castle.Core.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MvcContrib.TestHelper;
 using NTRCalendarMVC.Controllers;
@@ -91,9 +92,7 @@ namespace NTRCalendarMVC.Tests.Controllers {
         {
             var dbMock = new DbContextMock<StorageContext>();
             var controller = new CalendarController(dbMock.Object);
-            TestControllerBuilder builder = new TestControllerBuilder();
-            builder.InitializeController(controller);
-            controller.Session["UserID"] = "wgruszka";
+          
             var appointments = new[] {
                 new Appointment {
                     AppointmentID = Guid.NewGuid(),
@@ -101,15 +100,24 @@ namespace NTRCalendarMVC.Tests.Controllers {
                     Description = "Opis",
                     StartTime = TimeSpan.Zero,
                     EndTime = TimeSpan.Zero,
-                    AppointmentDate = DateTime.Today
+                    AppointmentDate = DateTime.Today,
                 }
             };
-            dbMock.WithDbSet(a => a.Appointments, appointments,
-                (appointment, keys) => appointment.AppointmentID.Equals(keys[0]));
+            dbMock.WithDbSet(a => a.Appointments, appointments, (appointment, keys) => appointment.AppointmentID.Equals(keys[0]));
 
-            var result = (RedirectToRouteResult)controller.DeleteConfirmed(appointments[0].AppointmentID);
+            TestControllerBuilder builder = new TestControllerBuilder();
+            builder.InitializeController(controller);
+            controller.Session["UserID"] = "wgruszka";
+            
+            var result = (RedirectToRouteResult)controller.Delete(appointments[0]);
+            
+            Console.Out.WriteLine(result.RouteValues["controller"]);
+            Console.Out.WriteLine(result.RouteValues["action"]);
 
-            Assert.AreEqual(false ,dbMock.Object.Appointments.Any(a => a.AppointmentID.Equals(appointments[0].AppointmentID)));
+            Console.Out.WriteLine(appointments[0].AppointmentID);
+            dbMock.Object.Appointments.ForEach(a => Console.Out.WriteLine(a.AppointmentID));
+
+            Assert.AreEqual(false, dbMock.Object.Appointments.Any(a => a.AppointmentID.Equals(appointments[0].AppointmentID)));
         }
 
     }

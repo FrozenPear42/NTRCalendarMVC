@@ -5,8 +5,9 @@
 }
 
 <h2>Usuwanie</h2>
-
 <h3>Czy napewno chcesz usunąć to spotkanie?</h3>
+
+<p class="text-danger">@ViewBag.ConcurrencyErrorMessage</p>
 <div>
     <hr/>
     <h4>@Html.ValueFor(m => m.Title)</h4>
@@ -21,6 +22,8 @@
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.AppointmentID)
+        @Html.HiddenFor(model => model.timestamp)
 
         <div class="input-group">
             <input type="submit" value="Usuń" class="btn btn-danger"/>
